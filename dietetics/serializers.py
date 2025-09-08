@@ -30,18 +30,26 @@ class UsersSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-class PersonnalDatabasesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PersonnalDatabases
-        fields = ['id', 'title', 'user', 'created_at']
-        read_only_fields = ['id', 'created_at']
-
 class FoodsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Foods
         fields = ['id', 'title', 'calories_kcal', 'proteins', 'fats', 'carbohydrates', 
                  'sugars', 'fibers', 'ags', 'agmi', 'agpi', 'cholesterol', 'alcohol',
                  'sodium', 'potassium', 'phosphorus', 'iron', 'calcium', 'vitamin_d', 'personal_db']
+
+class PersonnalDatabasesCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonnalDatabases
+        fields = ['title']
+
+class PersonnalDatabasesSerializer(serializers.ModelSerializer):
+    foods = FoodsSerializer(many = True, read_only=True)
+
+    class Meta:
+        model = PersonnalDatabases
+        # fields = ['id', 'title', 'user', 'created_at']
+        read_only_fields = ['id', 'created_at']
+        exclude = ['user']
 
 class FoodForMealsSerializer(serializers.ModelSerializer):
     food_title = serializers.CharField(source='food.title', read_only=True)
