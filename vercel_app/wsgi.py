@@ -7,7 +7,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
 # Configure Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ton_projet.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dietetic_lab_api.settings')
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
