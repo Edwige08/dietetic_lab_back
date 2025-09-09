@@ -68,5 +68,6 @@ class MealsSerializer(serializers.ModelSerializer):
 class CommentariesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commentaries
-        fields = ['id', 'description', 'user', 'is_visible', 'created_at']
+        # fields = ['id', 'description', 'user', 'is_visible', 'created_at']
         read_only_fields = ['id', 'created_at']
+        exclude = ['user']
