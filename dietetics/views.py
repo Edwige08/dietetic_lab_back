@@ -163,11 +163,7 @@ class CommentariesViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        # Affiche les commentaires visibles de tous + ses propres commentaires
-        from django.db.models import Q
-        return Commentaries.objects.filter(
-            Q(is_visible=True) | Q(user=self.request.user)
-        )
+        return Commentaries.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         # Associe automatiquement le commentaire à l'utilisateur connecté
