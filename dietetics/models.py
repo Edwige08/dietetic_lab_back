@@ -46,34 +46,37 @@ class Users(AbstractUser):
 
 class PersonnalDatabases(models.Model):
     title = models.CharField(max_length=255)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='personal_databases')
+    user = models.OneToOneField(Users, on_delete=models.CASCADE, related_name='personal_databases')
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name = "Base de données personnelle"
         verbose_name_plural = "Bases de données personnelles"
 
 class Foods(models.Model):
-    title = models.CharField(max_length=255)
-    calories_kcal = models.FloatField(default=0)
-    proteins = models.FloatField(default=0)
-    fats = models.FloatField(default=0)
-    carbohydrates = models.FloatField(default=0)
-    sugars = models.FloatField(default=0)
-    fibers = models.FloatField(default=0)
+    alim_nom_fr = models.CharField(max_length=255)
+    energie_reg_ue_kcal = models.FloatField(default=0)
+    proteines = models.FloatField(default=0)
+    lipides = models.FloatField(default=0)
+    glucides = models.FloatField(default=0)
+    sucres = models.FloatField(default=0)
+    fibres = models.FloatField(default=0)
     ags = models.FloatField(default=0)
     agmi = models.FloatField(default=0)
     agpi = models.FloatField(default=0)
     cholesterol = models.FloatField(default=0)
-    alcohol = models.FloatField(default=0)
+    alcool = models.FloatField(default=0)
     sodium = models.FloatField(default=0)
     potassium = models.FloatField(default=0)
-    phosphorus = models.FloatField(default=0)
-    iron = models.FloatField(default=0)
+    phosphore = models.FloatField(default=0)
+    fer = models.FloatField(default=0)
     calcium = models.FloatField(default=0)
-    vitamin_d = models.FloatField(default=0)
+    vitamine_d = models.FloatField(default=0)
     personal_db = models.ForeignKey(PersonnalDatabases, on_delete=models.CASCADE, 
                                    related_name='foods')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Meals(models.Model):
     title = models.CharField(max_length=255)
@@ -96,4 +99,73 @@ class Commentaries(models.Model):
     class Meta:
         verbose_name = "Commentaire"
         verbose_name_plural = "Commentaires"
+        ordering = ['-created_at']
+
+class ImcHistories(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    height = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+class DejHistories(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    height = models.FloatField()
+    age = models.FloatField()
+    nap = models.FloatField()
+    title = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+class UndernutritionAdultHistories(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    height = models.FloatField()
+    previous_weight = models.FloatField()
+    previous_weight_date = models.CharField(max_length=24)
+    albuminemia = models.FloatField()
+    sarcopenia = models.BooleanField(default=False)
+    etiological_food_intakes = models.BooleanField(default=False)
+    etiological_absorption = models.BooleanField(default=False)
+    etiological_agression = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+class UndernutritionSeniorHistories(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    height = models.FloatField()
+    previous_weight = models.FloatField()
+    previous_weight_date = models.CharField(max_length=24)
+    albuminemia = models.FloatField()
+    sarcopenia = models.BooleanField(default=False)
+    etiological_food_intakes = models.BooleanField(default=False)
+    etiological_absorption = models.BooleanField(default=False)
+    etiological_agression = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+class SriHistories(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    height = models.FloatField()
+    previous_weight = models.FloatField()
+    low_ingesta_five_days = models.BooleanField(default=False)
+    low_ingesta_ten_days = models.BooleanField(default=False)
+    potassium = models.FloatField()
+    phosphorus = models.FloatField()
+    magnesium = models.FloatField()
+    atcd = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
         ordering = ['-created_at']

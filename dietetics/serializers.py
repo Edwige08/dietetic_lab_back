@@ -33,9 +33,9 @@ class UsersSerializer(serializers.ModelSerializer):
 class FoodsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Foods
-        fields = ['id', 'title', 'calories_kcal', 'proteins', 'fats', 'carbohydrates', 
-                 'sugars', 'fibers', 'ags', 'agmi', 'agpi', 'cholesterol', 'alcohol',
-                 'sodium', 'potassium', 'phosphorus', 'iron', 'calcium', 'vitamin_d', 'personal_db']
+        fields = ['id', 'alim_nom_fr', 'energie_reg_ue_kcal', 'proteines', 'lipides', 'glucides', 
+                 'sucres', 'fibres', 'ags', 'agmi', 'agpi', 'cholesterol', 'alcool',
+                 'sodium', 'potassium', 'phosphore', 'fer', 'calcium', 'vitamine_d', 'personal_db']
 
 class PersonnalDatabasesCreateSerializer(serializers.ModelSerializer):
     class Meta:
