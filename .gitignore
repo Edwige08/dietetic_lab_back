@@ -22,6 +22,6 @@ db.sqlite3
 .DS_Store
 
 # Migrations (facultatif, selon les préférences)
-*/migrations/*.py
-!*/migrations/__init__.py
+# */migrations/*.py
+# !*/migrations/__init__.py
 .vercel
