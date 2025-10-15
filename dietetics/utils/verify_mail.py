@@ -2,7 +2,8 @@ def verify_mail(mail):
     if "@" not in mail:
         return False
     else:
-        if len(mail.split("@")) != 2 or len(mail.split("@")[0]) == 0 or len(mail.split("@")[1]) == 0 or "." not in mail.split("@")[1] or " " in mail.split("@")[0] or " " in mail.split("@")[1] : 
+        email_parts = mail.split("@")
+        if len(email_parts) != 2 or len(email_parts[0]) == 0 or len(email_parts[1]) == 0 or "." not in email_parts[1] or " " in email_parts[0] or " " in email_parts[1] : 
             return False
         else: 
             return True
