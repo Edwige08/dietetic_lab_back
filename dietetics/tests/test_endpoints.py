@@ -5,7 +5,7 @@ from dietetics.models import Users, PersonnalDatabases, Foods, Meals, Commentari
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class AuthEndpointsTests(APITestCase):
-    def setUp(self):  # Créer un utilisateur de test
+    def setUp(self):  # Create a test user
         self.user_data = {
             'mail': 'test@example.com',
             'password': 'testpassword123',
@@ -15,7 +15,7 @@ class AuthEndpointsTests(APITestCase):
         }
         self.user = Users.objects.create_user(**self.user_data)
         
-    def test_register_user(self):
+    def test_register_user(self):  # User creation: success
         url = reverse('register')
         data = {
             'mail': 'newuser@example.com',
@@ -28,7 +28,7 @@ class AuthEndpointsTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Users.objects.filter(mail='newuser@example.com').exists())
 
-    def test_login_user(self):
+    def test_login_user(self):  # User login: success
         url = reverse('token_obtain_pair')
         data = {
             'mail': self.user_data['mail'],
@@ -39,9 +39,76 @@ class AuthEndpointsTests(APITestCase):
         self.assertIn('access', response.data)
         self.assertIn('refresh', response.data)
 
+    def test_register_user_without_password(self):  # ❌ User creation: missing password
+        url = reverse('register')
+        data = {
+            'mail': 'newuser@example.com',
+            'firstname': 'New',
+            'lastname': 'User',
+            'gender': 'h'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('password', response.data)
+
+    def test_register_user_without_mail(self):  # ❌ User creation: missing email
+        url = reverse('register')
+        data = {
+            'password': 'testpassword123',
+            'firstname': 'New',
+            'lastname': 'User',
+            'gender': 'h'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('mail', response.data)
+
+    def test_register_user_with_invalid_mail(self):  # ❌ User creation: invalid email
+        url = reverse('register')
+        data = {
+            'mail': 'invalid-email',
+            'password': 'testpassword123',
+            'firstname': 'New',
+            'lastname': 'User',
+            'gender': 'h'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('mail', response.data)
+
+    def test_register_user_with_duplicate_mail(self):  # ❌ User creation: email already used
+        url = reverse('register')
+        data = {
+            'mail': self.user_data['mail'],  # Use the mail already used in setUp
+            'password': 'testpassword123',
+            'firstname': 'New',
+            'lastname': 'User',
+            'gender': 'h'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('mail', response.data)
+
+    def test_login_with_wrong_password(self):  # ❌ User login: wrong password
+        url = reverse('token_obtain_pair')
+        data = {
+            'mail': self.user_data['mail'],
+            'password': 'wrongpassword'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_login_with_nonexistent_user(self):  # ❌ User login: wrong email
+        url = reverse('token_obtain_pair')
+        data = {
+            'mail': 'nonexistent@example.com',
+            'password': 'testpassword123'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 class ResourceEndpointsTests(APITestCase):
-    def setUp(self):
-        # Créer un utilisateur de test et le connecter
+    def setUp(self):  # Create a test user and login
         self.user = Users.objects.create_user(
             mail='test@example.com',
             password='testpassword123',
@@ -50,11 +117,11 @@ class ResourceEndpointsTests(APITestCase):
             gender='h'
         )
         
-        # Authentifier l'utilisateur pour les tests
+        # Authenticate user for testing
         refresh = RefreshToken.for_user(self.user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
         
-        # Créer des données de test
+        # Create test data
         self.personal_db = PersonnalDatabases.objects.create(
             user=self.user,
             title="Base de données de test"
@@ -80,3 +147,30 @@ class ResourceEndpointsTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) > 0)
+
+    def test_access_without_token(self):  # ❌ Access without authentication token
+        # Remove authentication token
+        self.client.credentials()
+        
+        # Try to access to the personal database
+        url = reverse('personnaldatabases-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_invalid_personal_database(self):  # ❌ Create personal database: missing title
+        url = reverse('personnaldatabases-list')
+        data = {}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('title', response.data)
+
+    def test_create_invalid_food(self):  # ❌ Create food: invalid data
+        url = reverse('foods-list')
+        data = {
+            'alim_nom_fr': '',  # Empty name
+            'energie_reg_ue_kcal': -100,  # Negative value
+            'proteines': 'invalid',  # Non-numeric value
+            'personal_db': self.personal_db.id
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
