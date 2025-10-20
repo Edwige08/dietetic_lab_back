@@ -121,9 +121,8 @@ SPECTACULAR_SETTINGS = {
     
     ## Fonctionnalités principales
     * Gestion des utilisateurs et authentification
-    * Gestion des bases de données personnelles
-    * Gestion des aliments et de leurs valeurs nutritionnelles
-    * Gestion des repas et des journaux alimentaires
+    * Gestion d'une base alimentaire personnelle
+    * Gestion des aliments et de leurs valeurs nutritionnelles dans la base alimentaire personnelle
     ''',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
@@ -139,7 +138,7 @@ SPECTACULAR_SETTINGS = {
     'TAGS': [
         {'name': 'auth', 'description': 'Opérations d\'authentification'},
         {'name': 'users', 'description': 'Gestion des utilisateurs'},
-        {'name': 'personal-databases', 'description': 'Gestion des bases de données personnelles'},
+        {'name': 'personal-databases', 'description': 'Gestion de la base alimentaire personnelle'},
         {'name': 'foods', 'description': 'Gestion des aliments'},
         {'name': 'meals', 'description': 'Gestion des repas'},
     ],
