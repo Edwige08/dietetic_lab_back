@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
     'corsheaders',
     'dietetics',
 ]
@@ -102,6 +103,7 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -110,6 +112,52 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Dietetic Lab API',
+    'DESCRIPTION': '''
+    API pour l'application Dietetic Lab permettant la gestion des données nutritionnelles et diététiques.
+    
+    ## Fonctionnalités principales
+    * Gestion des utilisateurs et authentification
+    * Gestion d'une base alimentaire personnelle
+    * Gestion des aliments et de leurs valeurs nutritionnelles dans la base alimentaire personnelle
+    ''',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    # Configuration de la documentation
+    'CONTACT': {
+        'name': 'Support Dietetic Lab',
+        'url': 'https://github.com/Edwige08/dietetic_lab_back'
+    },
+    'LICENSE': {
+        'name': 'MIT',
+    },
+    'TAGS': [
+        {'name': 'auth', 'description': 'Opérations d\'authentification'},
+        {'name': 'users', 'description': 'Gestion des utilisateurs'},
+        {'name': 'personal-databases', 'description': 'Gestion de la base alimentaire personnelle'},
+        {'name': 'foods', 'description': 'Gestion des aliments'},
+        {'name': 'meals', 'description': 'Gestion des repas'},
+    ],
+    # Personnalisation de l'interface Swagger
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
+    # Sécurité
+    'SECURITY': [
+        {
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header'
+            }
+        }
+    ],
 }
 
 SIMPLE_JWT = {
