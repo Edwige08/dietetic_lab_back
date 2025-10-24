@@ -104,7 +104,7 @@ class DejHistories(models.Model):
     height = models.FloatField()
     age = models.FloatField()
     nap = models.FloatField()
-    title = models.CharField(max_length=10)
+    gender = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
