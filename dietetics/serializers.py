@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, PersonnalDatabases, Foods, Commentaries
+from .models import Users, PersonnalDatabases, Foods, Commentaries, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 
@@ -57,3 +57,23 @@ class CommentariesSerializer(serializers.ModelSerializer):
         # fields = ['id', 'description', 'user', 'is_visible', 'created_at']
         read_only_fields = ['id', 'created_at']
         exclude = ['user']
+
+class ImcHistoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImcHistories
+        fields = ['weight', 'height', 'created_at']
+
+class DejHistoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DejHistories
+        fields = ['weight', 'height', 'age', 'nap', 'gender', 'created_at']
+
+class UndernutritionAdultHistoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UndernutritionAdultHistories
+        fields = ['weight', 'height', 'previous_weight', 'previous_weight_date', 'albuminemia', 'sarcopenia', 'etiological_food_intakes', 'etiological_absorption', 'etiological_agression', 'created_at']
+
+class UndernutritionSeniorHistoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UndernutritionSeniorHistories
+        fields = ['weight', 'height', 'previous_weight', 'previous_weight_date', 'albuminemia', 'sarcopenia', 'etiological_food_intakes', 'etiological_absorption', 'etiological_agression', 'created_at']

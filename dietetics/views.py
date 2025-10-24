@@ -8,10 +8,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from .models import Users, PersonnalDatabases, Foods, Commentaries
+from .models import Users, PersonnalDatabases, Foods, Commentaries, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from .serializers import (
     UsersSerializer, PersonnalDatabasesSerializer, FoodsSerializer, 
-    CommentariesSerializer, CustomTokenObtainPairSerializer
+    CommentariesSerializer, CustomTokenObtainPairSerializer, ImcHistoriesSerializer, 
+    DejHistoriesSerializer, UndernutritionAdultHistoriesSerializer, UndernutritionSeniorHistoriesSerializer
 )
 
 class CustomLoginView(APIView):
@@ -138,3 +139,51 @@ class RegisterView(APIView):
                 "user_id": user.id
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ImcHistoriesViewSet(viewsets.ModelViewSet):
+    queryset = ImcHistories.objects.all()
+    serializer_class = ImcHistoriesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return ImcHistories.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Associe automatiquement l'historique IMC à l'utilisateur connecté
+        serializer.save(user=self.request.user)
+
+class DejHistoriesViewSet(viewsets.ModelViewSet):
+    queryset = DejHistories.objects.all()
+    serializer_class = DejHistoriesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return DejHistories.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Associe automatiquement l'historique DEJ à l'utilisateur connecté
+        serializer.save(user=self.request.user)
+
+class UndernutritionAdultHistoriesViewSet(viewsets.ModelViewSet):
+    queryset = UndernutritionAdultHistories.objects.all()
+    serializer_class = UndernutritionAdultHistoriesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return UndernutritionAdultHistories.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Associe automatiquement l'historique de dénutrition adulte à l'utilisateur connecté
+        serializer.save(user=self.request.user)
+
+class UndernutritionSeniorHistoriesViewSet(viewsets.ModelViewSet):
+    queryset = UndernutritionSeniorHistories.objects.all()
+    serializer_class = UndernutritionSeniorHistoriesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UndernutritionSeniorHistories.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Associe automatiquement l'historique de dénutrition senior à l'utilisateur connecté
+        serializer.save(user=self.request.user)
