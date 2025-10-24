@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, PersonnalDatabases, Foods, Meals, FoodForMeals, Commentaries
+from .models import Users, PersonnalDatabases, Foods, Commentaries
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 
@@ -50,20 +50,6 @@ class PersonnalDatabasesSerializer(serializers.ModelSerializer):
         # fields = ['id', 'title', 'user', 'created_at']
         read_only_fields = ['id', 'created_at']
         exclude = ['user']
-
-class FoodForMealsSerializer(serializers.ModelSerializer):
-    food_title = serializers.CharField(source='food.title', read_only=True)
-    
-    class Meta:
-        model = FoodForMeals
-        fields = ['id', 'quantity', 'food', 'food_title', 'meal']
-
-class MealsSerializer(serializers.ModelSerializer):
-    food_items = FoodForMealsSerializer(many=True, read_only=True)
-    
-    class Meta:
-        model = Meals
-        fields = ['id', 'title', 'user', 'food_items']
 
 class CommentariesSerializer(serializers.ModelSerializer):
     class Meta:

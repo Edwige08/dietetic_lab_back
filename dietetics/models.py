@@ -78,18 +78,6 @@ class Foods(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Meals(models.Model):
-    title = models.CharField(max_length=255)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='meals')
-
-class FoodForMeals(models.Model):
-    quantity = models.FloatField(help_text="Quantité en grammes")
-    food = models.ForeignKey(Foods, on_delete=models.CASCADE)
-    meal = models.ForeignKey(Meals, on_delete=models.CASCADE, related_name='food_items')
-
-    class Meta:
-        unique_together = ('food', 'meal')
-
 class Commentaries(models.Model):
     description = models.TextField()
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='commentaries')

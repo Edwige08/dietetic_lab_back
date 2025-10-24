@@ -8,10 +8,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from .models import Users, PersonnalDatabases, Foods, Meals, FoodForMeals, Commentaries
+from .models import Users, PersonnalDatabases, Foods, Commentaries
 from .serializers import (
     UsersSerializer, PersonnalDatabasesSerializer, FoodsSerializer, 
-    MealsSerializer, FoodForMealsSerializer, CommentariesSerializer, CustomTokenObtainPairSerializer
+    CommentariesSerializer, CustomTokenObtainPairSerializer
 )
 
 class CustomLoginView(APIView):
@@ -112,50 +112,6 @@ class FoodsViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response({"error": "db_id parameter required"}, status=400)
 
-class MealsViewSet(viewsets.ModelViewSet):
-    queryset = Meals.objects.all()
-    serializer_class = MealsSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_queryset(self):
-        # Un utilisateur ne voit que ses propres repas
-        return Meals.objects.filter(user=self.request.user)
-    
-    def perform_create(self, serializer):
-        # Associe automatiquement le repas à l'utilisateur connecté
-        serializer.save(user=self.request.user)
-    
-    @action(detail=True, methods=['post'])
-    def add_food(self, request, pk=None):
-        """
-        Endpoint personnalisé pour ajouter un aliment à un repas
-        POST /api/v1/meals/{id}/add_food/
-        Body: {"food_id": 1, "quantity": 100}
-        """
-        meal = self.get_object()
-        food_id = request.data.get('food_id')
-        quantity = request.data.get('quantity')
-        
-        if not food_id or not quantity:
-            return Response({"error": "food_id and quantity required"}, status=400)
-        
-        try:
-            food = Foods.objects.get(id=food_id, personal_db__user=request.user)
-            food_for_meal, created = FoodForMeals.objects.get_or_create(
-                meal=meal,
-                food=food,
-                defaults={'quantity': quantity}
-            )
-            
-            if not created:
-                food_for_meal.quantity = quantity
-                food_for_meal.save()
-            
-            serializer = FoodForMealsSerializer(food_for_meal)
-            return Response(serializer.data)
-            
-        except Foods.DoesNotExist:
-            return Response({"error": "Food not found"}, status=404)
 
 class CommentariesViewSet(viewsets.ModelViewSet):
     queryset = Commentaries.objects.all()
@@ -182,17 +138,3 @@ class RegisterView(APIView):
                 "user_id": user.id
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def post(self, request):
-    #     serializer = UsersSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         validated_data = serializer.validated_data
-    #         if 'password' in request.data:
-    #             validated_data['password'] = make_password(request.data['password'])
-            
-    #         user = Users.objects.create(**validated_data)
-    #         return Response(
-    #             {"message": "Utilisateur créé avec succès", "user_id": user.id}, 
-    #             status=status.HTTP_201_CREATED
-    #         )
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

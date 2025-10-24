@@ -7,7 +7,6 @@ router = DefaultRouter()
 router.register(r'users', views.UsersViewSet)
 router.register(r'personal-databases', views.PersonnalDatabasesViewSet)
 router.register(r'foods', views.FoodsViewSet)
-router.register(r'meals', views.MealsViewSet)
 router.register(r'commentaries', views.CommentariesViewSet)
 
 urlpatterns = [
