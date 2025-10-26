@@ -44,7 +44,7 @@ class Users(AbstractUser):
     USERNAME_FIELD = 'mail'
     REQUIRED_FIELDS = ['firstname', 'lastname']
 
-class PersonnalDatabases(models.Model):
+class Foodbases(models.Model):
     title = models.CharField(max_length=255)
     user = models.OneToOneField(Users, on_delete=models.CASCADE, related_name='personal_databases')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -73,14 +73,14 @@ class Foods(models.Model):
     fer = models.FloatField(default=0)
     calcium = models.FloatField(default=0)
     vitamine_d = models.FloatField(default=0)
-    personal_db = models.ForeignKey(PersonnalDatabases, on_delete=models.CASCADE, 
+    personal_db = models.ForeignKey(Foodbases, on_delete=models.CASCADE, 
                                    related_name='foods')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Commentaries(models.Model):
+class Comments(models.Model):
     description = models.TextField()
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='commentaries')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='comments')
     is_visible = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     

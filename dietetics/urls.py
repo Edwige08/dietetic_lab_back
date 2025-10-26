@@ -5,9 +5,9 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'users', views.UsersViewSet)
-router.register(r'personal-databases', views.PersonnalDatabasesViewSet)
+router.register(r'personal-databases', views.FoodbasesViewSet)
 router.register(r'foods', views.FoodsViewSet)
-router.register(r'commentaries', views.CommentariesViewSet)
+router.register(r'comments', views.CommentsViewSet)
 router.register(r'imc-histories', views.ImcHistoriesViewSet)
 router.register(r'dej-histories', views.DejHistoriesViewSet)
 router.register(r'undernutrition-adult-histories', views.UndernutritionAdultHistoriesViewSet)

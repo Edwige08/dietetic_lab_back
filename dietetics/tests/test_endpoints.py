@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from dietetics.models import Users, PersonnalDatabases, Foods, Meals, Commentaries
+from dietetics.models import Users, Foodbases, Foods
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class AuthEndpointsTests(APITestCase):
@@ -122,7 +122,7 @@ class ResourceEndpointsTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
         
         # Create test data
-        self.personal_db = PersonnalDatabases.objects.create(
+        self.personal_db = Foodbases.objects.create(
             user=self.user,
             title="Base de données de test"
         )

@@ -140,7 +140,7 @@ SPECTACULAR_SETTINGS = {
         {'name': 'users', 'description': 'Gestion des utilisateurs'},
         {'name': 'personal-databases', 'description': 'Gestion de la base alimentaire personnelle'},
         {'name': 'foods', 'description': 'Gestion des aliments de la base alimentaire personnelle'},
-        {'name': 'commentaries', 'description': 'Gestion des commentaires des utilisateurs'},
+        {'name': 'comments', 'description': 'Gestion des commentaires des utilisateurs'},
         {'name': 'imc-histories', 'description': 'Gestion de l\'historique des calculs d\'IMC'},
         {'name': 'dej-histories', 'description': 'Gestion de l\'historique des calculs de DEJ'},
         {'name': 'undernutrition-adult-histories', 'description': 'Gestion de l\'historique des évaluations de dénutrition adulte'},
