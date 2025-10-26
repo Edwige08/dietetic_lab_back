@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, PersonnalDatabases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
+from .models import Users, Foodbases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 
@@ -37,16 +37,16 @@ class FoodsSerializer(serializers.ModelSerializer):
                  'sucres', 'fibres', 'ags', 'agmi', 'agpi', 'cholesterol', 'alcool',
                  'sodium', 'potassium', 'phosphore', 'fer', 'calcium', 'vitamine_d', 'personal_db']
 
-class PersonnalDatabasesCreateSerializer(serializers.ModelSerializer):
+class FoodbasesCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PersonnalDatabases
+        model = Foodbases
         fields = ['title']
 
-class PersonnalDatabasesSerializer(serializers.ModelSerializer):
+class FoodbasesSerializer(serializers.ModelSerializer):
     foods = FoodsSerializer(many = True, read_only=True)
 
     class Meta:
-        model = PersonnalDatabases
+        model = Foodbases
         # fields = ['id', 'title', 'user', 'created_at']
         read_only_fields = ['id', 'created_at']
         exclude = ['user']

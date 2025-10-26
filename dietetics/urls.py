@@ -5,7 +5,7 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'users', views.UsersViewSet)
-router.register(r'personal-databases', views.PersonnalDatabasesViewSet)
+router.register(r'personal-databases', views.FoodbasesViewSet)
 router.register(r'foods', views.FoodsViewSet)
 router.register(r'comments', views.CommentsViewSet)
 router.register(r'imc-histories', views.ImcHistoriesViewSet)

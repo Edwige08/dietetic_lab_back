@@ -8,9 +8,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from .models import Users, PersonnalDatabases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
+from .models import Users, Foodbases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from .serializers import (
-    UsersSerializer, PersonnalDatabasesSerializer, FoodsSerializer, 
+    UsersSerializer, FoodbasesSerializer, FoodsSerializer, 
     CommentsSerializer, CustomTokenObtainPairSerializer, ImcHistoriesSerializer, 
     DejHistoriesSerializer, UndernutritionAdultHistoriesSerializer, UndernutritionSeniorHistoriesSerializer
 )
@@ -76,14 +76,14 @@ class UsersViewSet(viewsets.ModelViewSet):
             return Users.objects.all()
         return Users.objects.filter(id=self.request.user.id)
 
-class PersonnalDatabasesViewSet(viewsets.ModelViewSet):
-    queryset = PersonnalDatabases.objects.all()
-    serializer_class = PersonnalDatabasesSerializer
+class FoodbasesViewSet(viewsets.ModelViewSet):
+    queryset = Foodbases.objects.all()
+    serializer_class = FoodbasesSerializer
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
         # Un utilisateur ne voit que ses propres bases
-        return PersonnalDatabases.objects.filter(user=self.request.user)
+        return Foodbases.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         # Associe automatiquement la base à l'utilisateur connecté
