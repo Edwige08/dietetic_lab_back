@@ -8,10 +8,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from .models import Users, PersonnalDatabases, Foods, Commentaries, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
+from .models import Users, PersonnalDatabases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from .serializers import (
     UsersSerializer, PersonnalDatabasesSerializer, FoodsSerializer, 
-    CommentariesSerializer, CustomTokenObtainPairSerializer, ImcHistoriesSerializer, 
+    CommentsSerializer, CustomTokenObtainPairSerializer, ImcHistoriesSerializer, 
     DejHistoriesSerializer, UndernutritionAdultHistoriesSerializer, UndernutritionSeniorHistoriesSerializer
 )
 
@@ -114,13 +114,13 @@ class FoodsViewSet(viewsets.ModelViewSet):
         return Response({"error": "db_id parameter required"}, status=400)
 
 
-class CommentariesViewSet(viewsets.ModelViewSet):
-    queryset = Commentaries.objects.all()
-    serializer_class = CommentariesSerializer
+class CommentsViewSet(viewsets.ModelViewSet):
+    queryset = Comments.objects.all()
+    serializer_class = CommentsSerializer
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return Commentaries.objects.filter(user=self.request.user)
+        return Comments.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         # Associe automatiquement le commentaire à l'utilisateur connecté

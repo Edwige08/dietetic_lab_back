@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, PersonnalDatabases, Foods, Commentaries, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
+from .models import Users, PersonnalDatabases, Foods, Comments, ImcHistories, DejHistories, UndernutritionAdultHistories, UndernutritionSeniorHistories
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 
@@ -51,9 +51,9 @@ class PersonnalDatabasesSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at']
         exclude = ['user']
 
-class CommentariesSerializer(serializers.ModelSerializer):
+class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Commentaries
+        model = Comments
         # fields = ['id', 'description', 'user', 'is_visible', 'created_at']
         read_only_fields = ['id', 'created_at']
         exclude = ['user']
