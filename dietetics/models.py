@@ -51,8 +51,9 @@ class Foodbases(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "Base de données personnelle"
-        verbose_name_plural = "Bases de données personnelles"
+        verbose_name = "Base alimentaire personnelle"
+        verbose_name_plural = "Bases alimentaires personnelles"
+        ordering = ['-created_at']
 
 class Foods(models.Model):
     alim_nom_fr = models.CharField(max_length=255)
@@ -77,6 +78,11 @@ class Foods(models.Model):
                                    related_name='foods')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Aliment"
+        verbose_name_plural = "Aliments"
 
 class Comments(models.Model):
     description = models.TextField()
