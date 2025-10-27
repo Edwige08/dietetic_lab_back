@@ -137,7 +137,7 @@ class ResourceEndpointsTests(APITestCase):
         )
 
     def test_get_personal_database(self):
-        url = reverse('personnaldatabases-list')
+        url = '/api/v1/personal-databases/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) > 0)
@@ -153,12 +153,12 @@ class ResourceEndpointsTests(APITestCase):
         self.client.credentials()
         
         # Try to access to the personal database
-        url = reverse('personnaldatabases-list')
+        url = '/api/v1/personal-databases/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_invalid_personal_database(self):  # ❌ Create personal database: missing title
-        url = reverse('personnaldatabases-list')
+        url = '/api/v1/personal-databases/'
         data = {}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
