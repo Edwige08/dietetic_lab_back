@@ -8,7 +8,7 @@ class AuthEndpointsTests(APITestCase):
     def setUp(self):  # Create a test user
         self.user_data = {
             'mail': 'test@example.com',
-            'password': 'testpassword123',
+            'password': 'TestPassword123!',
             'firstname': 'Test',
             'lastname': 'User',
             'gender': 'h'
@@ -19,7 +19,7 @@ class AuthEndpointsTests(APITestCase):
         url = reverse('register')
         data = {
             'mail': 'newuser@example.com',
-            'password': 'newpassword123',
+            'password': 'NewPassword123!',
             'firstname': 'New',
             'lastname': 'User',
             'gender': 'h'
@@ -54,7 +54,7 @@ class AuthEndpointsTests(APITestCase):
     def test_register_user_without_mail(self):  # ❌ User creation: missing email
         url = reverse('register')
         data = {
-            'password': 'testpassword123',
+            'password': 'TestPassword123!',
             'firstname': 'New',
             'lastname': 'User',
             'gender': 'h'
@@ -67,7 +67,7 @@ class AuthEndpointsTests(APITestCase):
         url = reverse('register')
         data = {
             'mail': 'invalid-email',
-            'password': 'testpassword123',
+            'password': 'TestPassword123!',
             'firstname': 'New',
             'lastname': 'User',
             'gender': 'h'
@@ -80,7 +80,7 @@ class AuthEndpointsTests(APITestCase):
         url = reverse('register')
         data = {
             'mail': self.user_data['mail'],  # Use the mail already used in setUp
-            'password': 'testpassword123',
+            'password': 'TestPassword123!',
             'firstname': 'New',
             'lastname': 'User',
             'gender': 'h'
@@ -93,7 +93,7 @@ class AuthEndpointsTests(APITestCase):
         url = reverse('token_obtain_pair')
         data = {
             'mail': self.user_data['mail'],
-            'password': 'wrongpassword'
+            'password': 'WrongPassword123!'
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -102,7 +102,7 @@ class AuthEndpointsTests(APITestCase):
         url = reverse('token_obtain_pair')
         data = {
             'mail': 'nonexistent@example.com',
-            'password': 'testpassword123'
+            'password': 'TestPassword123!'
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -111,7 +111,7 @@ class ResourceEndpointsTests(APITestCase):
     def setUp(self):  # Create a test user and login
         self.user = Users.objects.create_user(
             mail='test@example.com',
-            password='testpassword123',
+            password='TestPassword123!',
             firstname='Test',
             lastname='User',
             gender='h'
