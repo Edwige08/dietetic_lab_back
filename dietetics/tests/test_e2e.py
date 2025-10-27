@@ -30,7 +30,7 @@ class PersonalDatabaseE2ETest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}')
         
         # 3. creating a personal database
-        personal_db_url = reverse('personnaldatabases-list')
+        personal_db_url = '/api/v1/personal-databases/'
         personal_db_data = {
             'title': 'Ma base de données personnelle'
         }
